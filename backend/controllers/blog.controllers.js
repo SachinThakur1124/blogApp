@@ -38,3 +38,12 @@ export const createBlogController = async (req, res, next) => {
     });
   }
 };
+
+export const getAllBlogPostsControllers = async (req, res, next) => {
+  try {
+    const allPosts = await BlogModel.find({});
+    res.status(200).json({ success: true, allPosts });
+  } catch (error) {
+    res.status(500).json({ success: false, error: "Internal sever error" });
+  }
+};

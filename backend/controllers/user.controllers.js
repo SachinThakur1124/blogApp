@@ -7,7 +7,7 @@ export const userRegisterController = async (req, res, next) => {
     const { name, email, password } = req.body;
     if (!name || !email || !password) {
       return res.status(401).json({
-        message: "Please fill in all fields",
+        error: "Please fill in all fields",
         success: false,
       });
     }
@@ -17,7 +17,7 @@ export const userRegisterController = async (req, res, next) => {
     if (existedUser) {
       return res.status(400).json({
         success: false,
-        message: "User already user exists.",
+        error: "User already user exists.",
       });
     }
 
