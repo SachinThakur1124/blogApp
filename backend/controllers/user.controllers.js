@@ -1,6 +1,8 @@
 import UserModel from "../models/user.models.js";
 import bcryptjs from "bcryptjs";
 import generateToken from "../service/generateToken.service.js";
+import { JWT_SECRET } from "../config/envVars.config.js";
+import jwt from "jsonwebtoken";
 
 export const userRegisterController = async (req, res, next) => {
   try {
@@ -81,5 +83,30 @@ export const userLoginController = async (req, res, next) => {
       success: false,
       error: "Internal server error",
     });
+  }
+};
+
+export const verifyTokenController = async (req, res, next) => {
+  try {
+    const token = req.headers["x-auth-token"];
+
+    const decoded = jwt.verify(token, JWT_SECRET);
+    //console.log(decoded);
+    const user = await UserModel.findById(decoded.userId);
+    if (!user) {
+      return res
+        .status(500)
+        .json({ success: false, error: "Please provide token" });
+    }
+    res.status(200).json({
+      success: true,
+      user: {
+        name: user._doc.name,
+        email: user._doc.email,
+        password: "",
+      },
+    });
+  } catch (error) {
+    res.status(500).json({ success: false, error: error.message });
   }
 };
