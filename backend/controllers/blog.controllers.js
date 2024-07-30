@@ -47,3 +47,17 @@ export const getAllBlogPostsControllers = async (req, res, next) => {
     res.status(500).json({ success: false, error: "Internal sever error" });
   }
 };
+
+export const getSingleUserBlogByUserIdController = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+
+    const getUserPosts = await BlogModel.find({
+      user: id,
+    });
+
+    res.status(200).json({ success: true, posts: getUserPosts });
+  } catch (error) {
+    res.status(500).json({ success: false, error: "Internal server error" });
+  }
+};

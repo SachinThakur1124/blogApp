@@ -101,6 +101,7 @@ export const verifyTokenController = async (req, res, next) => {
     res.status(200).json({
       success: true,
       user: {
+        id: user._doc._id,
         name: user._doc.name,
         email: user._doc.email,
         password: "",
